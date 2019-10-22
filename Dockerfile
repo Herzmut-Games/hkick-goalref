@@ -1,4 +1,4 @@
-FROM ruby:alpine
+FROM arm32v7/ruby:alpine
 ADD . /
 RUN apk add --update \
     build-base \

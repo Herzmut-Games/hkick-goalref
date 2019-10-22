@@ -1,4 +1,5 @@
 require 'epoll'
+require 'net/http'
 
 def watch pin, on:
   File.binwrite "/sys/class/gpio/export", pin.to_s
@@ -21,15 +22,21 @@ def watch pin, on:
 
   loop do
     fd.seek 0, IO::SEEK_SET
-    epoll.wait # put the program to sleep until the status changes
+    epoll.wait
     yield fd.read.chomp
   end
 ensure
   File.binwrite "/sys/class/gpio/unexport", pin.to_s
 end
 
-pin = ENV['KICKER_SENSOR_PIN']
+pin  = ENV['KICKER_SENSOR_PIN']
+team = ENV['KICKER_TEAM']
+uri  = URI('http://hkick:3000/goals')
 
-watch pin, on: 'both' do |value|
+watch pin, on: :both do |value|
   p value
+  next unless value.to_i == 0
+
+  res = Net::HTTP.post_form(uri, 'team' => team)
+  p res
 end
