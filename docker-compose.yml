@@ -1,0 +1,16 @@
+version: '3'
+services:
+  white:
+    build: .
+    volumes:
+       - /sys:/sys
+    environment:
+      KICKER_SENSOR_PIN: 17
+      KICKER_TEAM: white
+  red:
+    build: .
+    volumes:
+       - /sys:/sys
+    environment:
+      KICKER_SENSOR_PIN: 27
+      KICKER_TEAM: red
