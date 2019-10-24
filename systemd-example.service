@@ -1,0 +1,14 @@
+# /etc/systemd/system/goalref.service
+[Unit]
+Description=Start Goalref
+
+[Service]
+PrivateTmp=true
+User=pi
+Group=pi
+Type=simple
+ExecStart=/usr/local/bin/hkick-goalref
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
