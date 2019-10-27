@@ -5,4 +5,4 @@ It is capable of monitoring two break beam sensors (we use the [adafruit IR sens
 
 hkick is meant to be very modular so you could use a small device such a raspberry pi zero or esp8266 to only run the  `hkick-goalref` next to your kicker and have the rest of the software running somewhere else.
 
-Currently `hkic-goalref` reports a goal via HTTP to `hkick-core`. This later will be switched to MQTT.
+Currently `hkic-goalref` reports a goal via HTTP to [hkick-core](https://github.com/Herzmut-Games/hkick-core). This later will be switched to MQTT.
