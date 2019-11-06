@@ -16,11 +16,6 @@ var (
 )
 
 func connect(clientID string, uri *url.URL) mqtt.Client {
-	uri, err := url.Parse("mqtt://172.30.1.32:1883")
-	if err != nil {
-		log.Fatal(err)
-	}
-	
 	opts := mqtt.NewClientOptions()
 	opts.AddBroker(fmt.Sprintf("tcp://%s", uri.Host))
 

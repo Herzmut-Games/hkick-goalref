@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"net/url"
 	"os"
@@ -55,6 +56,10 @@ func watchWhiteGoal(pin *gpio.Pin) {
 }
 
 func main() {
+	uri, err := url.Parse("mqtt://172.30.1.32:1883")
+	if err != nil {
+		log.Fatal(err)
+	}
 	client = connect("pub", uri)
 	mutex = &sync.Mutex{}
 
