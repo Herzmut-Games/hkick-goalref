@@ -74,11 +74,6 @@ func main() {
 	whiteGoal.Input()
 	whiteGoal.PullUp()
 
-	// capture exit signals to ensure resources are released on exit.
-	quit := make(chan os.Signal, 1)
-	signal.Notify(quit, os.Interrupt, os.Kill)
-	defer signal.Stop(quit)
-
 	// set callback for red goal
 	err = redGoal.Watch(gpio.EdgeRising, watchRedGoal)
 	if err != nil {
@@ -92,6 +87,11 @@ func main() {
 		panic(err)
 	}
 	defer whiteGoal.Unwatch()
+
+	// capture exit signals to ensure resources are released on exit.
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, os.Interrupt, os.Kill)
+	defer signal.Stop(quit)
 
 	fmt.Println("Watching Pin goals...")
 	select {
