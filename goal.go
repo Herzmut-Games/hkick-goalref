@@ -63,7 +63,7 @@ func main() {
 	client = connect("pub", uri)
 	mutex = &sync.Mutex{}
 
-	err := gpio.Open()
+	err = gpio.Open()
 	if err != nil {
 		panic(err)
 	}
