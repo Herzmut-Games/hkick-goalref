@@ -1,4 +1,5 @@
 package main
+
 import (
 	"fmt"
 	"net/http"
@@ -12,11 +13,10 @@ import (
 )
 
 var (
-	mutex *sync.Mutex
-        redGoalLastState gpio.Level
-        whiteGoalLastState gpio.Level
+	mutex              *sync.Mutex
+	redGoalLastState   gpio.Level
+	whiteGoalLastState gpio.Level
 )
-
 
 func watchRedGoal(pin *gpio.Pin) {
 	mutex.Lock()
@@ -25,6 +25,7 @@ func watchRedGoal(pin *gpio.Pin) {
 	currentState := pin.Read()
 	if redGoalLastState == true && currentState == false {
 		fmt.Println("White scored")
+		client.Publish(goalTopic, 0, false, "white")
 
 		_, err := http.PostForm("http://localhost:3000/goals", url.Values{"team": {"white"}})
 		if err != nil {
@@ -42,6 +43,7 @@ func watchWhiteGoal(pin *gpio.Pin) {
 	currentState := pin.Read()
 	if whiteGoalLastState == true && currentState == false {
 		fmt.Println("Red scored")
+		client.Publish(goalTopic, 0, false, "red")
 
 		_, err := http.PostForm("http://localhost:3000/goals", url.Values{"team": {"red"}})
 		if err != nil {
@@ -53,6 +55,7 @@ func watchWhiteGoal(pin *gpio.Pin) {
 }
 
 func main() {
+	client = connect("pub", uri)
 	mutex = &sync.Mutex{}
 
 	err := gpio.Open()
